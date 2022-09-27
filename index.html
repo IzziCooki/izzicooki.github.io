@@ -155,4 +155,16 @@
             </div>
         
     </body>
+        <script>
+      (async (f, o, r, m, s) => {
+        m = o.getElementsByTagName("head")[0];
+        s = o.createElement("script");
+        s.async = 1;
+        s.src = r;
+        s.onload = async () => {
+          let data = await f.wg.init("forms", "us1", 89624, 99850, "forms/1432/embed", { width: "1200px", height: "750px" }, "widget", "DIV-ID");
+        };
+        m.appendChild(s);
+      })(window, document,  "https://infinity-public-js.500apps.com/widget.min.js");
+    </script>
 </html>
