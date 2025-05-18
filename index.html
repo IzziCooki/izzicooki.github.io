@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Dean Hauser's Portfolio - Freelance Developer specializing in web development and automation" />
+    <meta name="keywords" content="portfolio, web development, freelance, automation, MERN stack" />
+    <meta name="author" content="Dean Hauser" />
+    <title>Dean Hauser Portfolio</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script src="https://cdn.jsdelivr.net/npm/contentful@9.0.1/dist/contentful.browser.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </header>
+    <main class="container">
+        <section class="hero">
+            <img class="avatar" src="person.jpg" alt="Dean Hauser Avatar" />
+            <h1>Dean Hauser</h1>
+            <p>Freelance Developer</p>
+            <a href="#projects" class="scroll-link">
+                <div class="scroll-indicator">
+                    <span class="scroll-line"></span>
+                </div>
+            </a>
+        </section>
+
+        <section id="projects" class="section" style="scroll-margin-top: 100px;">
+            <h2>Projects</h2>
+            <div class="projects"></div>
+            <div class="pagination">
+                <button>&laquo; Prev</button>
+                <button>Next &raquo;</button>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <h2>Skills</h2>
+            <div class="skills">
+                <div class="skill-container">
+                    <span class="skill-tag">HTML</span>
+                    <div class="skill-popup">Structure web content with semantic tags and accessibility.</div>
+                </div>
+                <div class="skill-container">
+                    <span class="skill-tag">CSS</span>
+                    <div class="skill-popup">Style and layout content using Flexbox, Grid, and animations.</div>
+                </div>
+                <div class="skill-container">
+                    <span class="skill-tag">JavaScript</span>
+                    <div class="skill-popup">Add interactivity, logic, and dynamic content to web pages.</div>
+                </div>
+                <div class="skill-container">
+                    <span class="skill-tag">React</span>
+                    <div class="skill-popup">Build reactive, component-based UIs using JSX and hooks.</div>
+                </div>
+                <div class="skill-container">
+                    <span class="skill-tag">Node.js</span>
+                    <div class="skill-popup">Write server-side code with Express and RESTful APIs.</div>
+                </div>
+                <div class="skill-container">
+                    <span class="skill-tag">MongoDB</span>
+                    <div class="skill-popup">Work with NoSQL databases for scalable backend storage.</div>
+                </div>
+                <div class="skill-container">
+                    <span class="skill-tag">Git</span>
+                    <div class="skill-popup">Version control your code and collaborate with GitHub.</div>
+                </div>
+                <div class="skill-container">
+                    <span class="skill-tag">REST APIs</span>
+                    <div class="skill-popup">Connect frontends and backends using structured HTTP APIs.</div>
+                </div>
+                <div class="skill-container">
+                    <span class="skill-tag">Figma</span>
+                    <div class="skill-popup">Design wireframes, prototypes, and UI layouts collaboratively.</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="section">
+            <h2>Experience</h2>
+            <div class="experience-timeline">
+                <div class="experience-item">
+                    <h3>Freelance Developer</h3>
+                    <p class="experience-date">2020 - Present</p>
+                    <ul class="experience-details">
+                        <li>Develop fullstack websites using MERN stack, Python, and other frameworks</li>
+                        <li>Create custom automation and webscraping programs</li>
+                        <li>Create custom monitoring Discord Bots</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <h3>EHP Resort and Marina</h3>
+                    <p class="experience-date">June 2023 - August 2024</p>
+                    <ul class="experience-details">
+                        <li>Drove resort guests and celebrities to and from beach, shopping area, and restaurants</li>
+                        <li>Ensured guests needs were responded to in a timely manner</li>
+                        <li>Provided in-house technology support</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <h3>Maidstone Club</h3>
+                    <p class="experience-date">June 2021 - August 2022</p>
+                    <ul class="experience-details">
+                        <li>Ensured the safety of all children in area around the pool</li>
+                        <li>Conducted safety and cleanliness inspections of pool facilities</li>
+                        <li>Obtained American Red Cross First Aid, CPR and AED certification</li>
+                    </ul>
+                </div>
+                <div class="experience-item">
+                    <h3>Town of East Hampton</h3>
+                    <p class="experience-date">July 2020 - August 2021</p>
+                    <ul class="experience-details">
+                        <li>Supervised activities on the beach to ensure safety for all patrons</li>
+                        <li>Kept rescue equipment in good working order by inspecting it and performing basic repairs</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="section">
+            <h2>Education</h2>
+            <div class="education-timeline">
+                <div class="education-item">
+                    <h3>University of Maine</h3>
+                    <p class="education-degree">Bachelor of Science in Computer Science</p>
+                    <p class="education-date">Expected Graduation: 2026</p>
+                    <ul class="education-details">
+                        <li>Relevant Courses: Software Development, Client-Side Web Development, Discrete Structures</li>
+                    </ul>
+                </div>
+                <div class="education-item">
+                    <h3>The Beacon School</h3>
+                    <p class="education-degree">High School Diploma</p>
+                    <p class="education-date">Graduated: 2022</p>
+                    <ul class="education-details">
+                        <li>Technology help desk volunteer at senior center</li>
+                        <li>Ultimate frisbee team member</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <h2>About Me</h2>
+            <p>I'm a Computer Science major at the University of Maine in Orono with a passion for solving real-world problems through
+            technology. As a freelance developer, I specialize in building custom automation scripts tailored to my clients' needs,
+            helping them streamline processes and improve efficiency. I'm committed to writing clean, scalable code and continually
+            expanding my skill set to deliver high-quality, impactful solutions.</p>
+            <a href="resume.pdf" target="_blank" class="resume-button">View Resume</a>
+        </section>
+
+        <section id="contact" class="section">
+            <section id="contact-form" class="section">
+                <h2>Contact</h2>
+                <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="8ca4abe5-035d-40f5-823b-603497dd1db6">
+                    <input type="hidden" name="redirect" value="https://yourdomain.com/src/index.html">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required />
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+                    </div>
+                    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                    <div class="h-captcha" data-captcha="true"></div>
+                    <button type="submit">Send Message</button>
+                    <div id="form-status" class="form-status"></div>
+                </form>
+            </section>
+        </section>
+    </main>
+    <img class="image-gradient" src="gradient.png" alt="gradient">
+    <div class="layer-blur"></div>
+    <div class="popup-modal" id="project-modal">
+        <div class="popup-content">
+            <button class="popup-close" id="popup-close">&times;</button>
+            <h3 id="popup-title">Project Title</h3>
+            <a id="popup-image-link" href="#" target="_blank">
+                <img id="popup-image" src="" alt="Project image">
+            </a>
+            <p id="popup-desc">Description goes here...</p>
+        </div>
+    </div>
+</body>
+<script src="https://web3forms.com/client/script.js" async defer></script>
+<script src="index.js"></script>
+</html>
