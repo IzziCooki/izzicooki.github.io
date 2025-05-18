@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - Level 78 Barber (Dark)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            /* Dark Theme Palette */
+            --dark-bg-primary: #121212;
+            --dark-bg-secondary: #1E1E1E;
+            --dark-bg-header-footer: #0D0D0D;
+            --dark-text-primary: #E0E0E0;
+            --dark-text-secondary: #BDBDBD;
+            --dark-text-on-accent: #111111;
+            --dark-accent-primary: #d4af37;
+            --dark-accent-primary-hover: #b89b2e;
+            --dark-headings-color: var(--dark-accent-primary);
+            --dark-border-color: #333333;
+            --font-primary: 'Playfair Display', serif;
+            --font-secondary: 'Montserrat', sans-serif;
+        }
+
+        /* General Resets & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-secondary);
+            line-height: 1.6;
+            color: var(--dark-text-primary);
+            background-color: var(--dark-bg-primary);
+            overflow-x: hidden;
+            padding-top: 80px;
+            /* Account for fixed header */
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-primary);
+            color: var(--dark-headings-color);
+            margin-bottom: 0.75em;
+        }
+
+        h2.services-page-title {
+            /* Section titles, specifically for services page */
+            font-size: 3.2em;
+            text-align: center;
+            margin-bottom: 1.5em;
+            /* Adjusted margin-bottom */
+            padding-top: 15px;
+            /* Reduced padding-top */
+            color: var(--dark-headings-color);
+        }
+
+        p {
+            margin-bottom: 1em;
+            color: var(--dark-text-secondary);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--dark-accent-primary);
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--dark-accent-primary-hover);
+        }
+
+        /* Container for sections */
+        section {
+            padding: 30px 20px;
+            /* Reduced top/bottom padding for the main section */
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        .main-header {
+            background-color: var(--dark-bg-header-footer);
+            padding: 1em 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar .logo {
+            font-family: var(--font-primary);
+            font-size: 1.8em;
+            color: var(--dark-accent-primary);
+            font-weight: bold;
+        }
+
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .navbar .nav-links li {
+            margin-left: 25px;
+        }
+
+        .navbar .nav-links li a {
+            color: var(--dark-text-primary);
+            font-weight: 500;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .navbar .nav-links li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--dark-accent-primary);
+            transition: width 0.3s ease;
+        }
+
+        .navbar .nav-links li a:hover::after,
+        .navbar .nav-links li a.active::after {
+            width: 100%;
+        }
+
+        .navbar .nav-links li a.active {
+            color: var(--dark-accent-primary);
+        }
+
+        .navbar .nav-links li a:hover {
+            color: var(--dark-accent-primary);
+        }
+
+        .cta-button {
+            background-color: var(--dark-accent-primary);
+            color: var(--dark-text-on-accent) !important;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+            display: inline-block;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            background-color: var(--dark-accent-primary-hover);
+            color: var(--dark-text-on-accent) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--dark-text-primary);
+            font-size: 1.8em;
+            cursor: pointer;
+        }
+
+        /* Services List Styling */
+        .services-list-container {
+            background-color: var(--dark-bg-secondary);
+            padding: 25px 30px;
+            /* Reduced padding for the container */
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--dark-border-color);
+        }
+
+        .service-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--dark-border-color);
+            gap: 20px;
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-details {
+            flex-grow: 1;
+        }
+
+        .service-item h3 {
+            font-family: var(--font-secondary);
+            font-size: 1.15em;
+            font-weight: 600;
+            color: var(--dark-text-primary);
+            margin-bottom: 5px;
+        }
+
+        .service-item p.service-description {
+            font-size: 0.9em;
+            color: var(--dark-text-secondary);
+            margin-bottom: 0;
+            line-height: 1.5;
+        }
+
+        .service-item p.service-note {
+            font-size: 0.8em;
+            font-style: italic;
+            color: var(--dark-accent-primary-hover);
+            margin-top: 4px;
+            margin-bottom: 0;
+        }
+
+        .service-price {
+            font-family: var(--font-primary);
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--dark-accent-primary);
+            white-space: nowrap;
+            margin-left: 20px;
+        }
+
+
+        /* Footer */
+        .main-footer {
+            background-color: var(--dark-bg-header-footer);
+            color: var(--dark-text-secondary);
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.9em;
+            margin-top: 40px;
+        }
+
+        .main-footer p {
+            margin-bottom: 0.5em;
+            color: var(--dark-text-secondary);
+        }
+
+        .main-footer a {
+            color: var(--dark-accent-primary);
+        }
+
+        .main-footer a:hover {
+            color: var(--dark-accent-primary-hover);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                margin-top: 1em;
+                background-color: var(--dark-bg-header-footer);
+            }
+
+            .navbar .nav-links.active {
+                display: flex;
+            }
+
+            .navbar .nav-links li {
+                margin-left: 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .navbar .nav-links li a {
+                display: block;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--dark-border-color);
+            }
+
+            .navbar .nav-links li:last-child a {
+                border-bottom: none;
+            }
+
+            .navbar .cta-button.header-cta {
+                display: none;
+            }
+
+            .navbar .logo-container {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                align-items: center;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            h2.services-page-title {
+                font-size: 2.5em;
+                margin-bottom: 1.2em;
+                /* Adjusted */
+                padding-top: 10px;
+                /* Adjusted */
+            }
+
+            .services-list-container {
+                padding: 15px 20px;
+                /* Adjusted */
+            }
+
+            .service-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .service-price {
+                margin-left: 0;
+                margin-top: 5px;
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2.services-page-title {
+                font-size: 2.2em;
+                margin-bottom: 1em;
+                /* Adjusted */
+                padding-top: 5px;
+                /* Adjusted */
+            }
+
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 0.85em;
+            }
+
+            .services-list-container {
+                padding: 10px 15px;
+                /* Adjusted */
+            }
+
+            .service-item h3 {
+                font-size: 1.1em;
+            }
+
+            .service-item p.service-description {
+                font-size: 0.85em;
+            }
+
+            .service-price {
+                font-size: 1.15em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo-container">
+                <div class="logo">LEVEL 78</div>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu" aria-expanded="false">
+                    &#9776; </button>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="index.html#gallery">Gallery</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <a href="https://booksy.com/en-us/921790_level-78-barbershop_barber-shop_30067_new-york-city?do=invite&_branch_match_id=1058754218167972127&utm_medium=merchant_customer_invite&_branch_referrer=H4sIAAAAAAAAA8soKSkottLXT07J0UvKz88urtRLzs%2FVj0rK8zMJNEoyLE8CAJwwiwQiAAAA"
+                class="cta-button header-cta" target="_blank" rel="noopener noreferrer">Book Now</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="services-page-content" class="services-page-section">
+            <div class="container">
+                <h2 class="services-page-title">Our Premier Services</h2>
+                <div class="services-list-container">
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Facial Mask & Scalp Massage</h3>
+                            <p class="service-description">Relax and rejuvenate with a soothing facial mask and
+                                invigorating scalp massage.</p>
+                        </div>
+                        <span class="service-price">$30</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Haircut with Hot Towel & Neck Shave</h3>
+                            <p class="service-description">A precision haircut complemented by a classic hot towel
+                                treatment and a clean neck shave.</p>
+                        </div>
+                        <span class="service-price">$35</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Haircut</h3>
+                            <p class="service-description">Get a sharp, stylish haircut tailored to your preference.</p>
+                        </div>
+                        <span class="service-price">$35</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Kids Cut (Under 12)</h3>
+                            <p class="service-description">Gentle and stylish cuts for our younger clients under 12
+                                years old.</p>
+                        </div>
+                        <span class="service-price">$30</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Long Hair Haircut</h3>
+                            <p class="service-description">Expert cutting and styling for longer hair, ensuring a great
+                                shape and manageability.</p>
+                        </div>
+                        <span class="service-price">$40</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Shave & Facial Mask with Scalp Massage</h3>
+                            <p class="service-description">The ultimate grooming experience: a smooth shave, refreshing
+                                facial mask, and relaxing scalp massage. So fresh and so clean!</p>
+                        </div>
+                        <span class="service-price">$65</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Combo: Haircut, Shave, Facial Mask & Scalp Massage</h3>
+                            <p class="service-description">The complete package for a total refresh. Includes haircut,
+                                shave, facial mask, and scalp massage.</p>
+                        </div>
+                        <span class="service-price">$85</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>House Call - Haircut & Shave</h3>
+                            <p class="service-description">Enjoy our premium haircut and shave services in the comfort
+                                of your own home.</p>
+                        </div>
+                        <span class="service-price">$120</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Royal Shave</h3>
+                            <p class="service-description">A luxurious hot shave experience including a soothing face
+                                massage.</p>
+                        </div>
+                        <span class="service-price">$35</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Haircut - Skin Fade (Any Age)</h3>
+                            <p class="service-description">Achieve a sharp, modern look with our expert skin fade
+                                service, suitable for all ages.</p>
+                        </div>
+                        <span class="service-price">$35</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Beard Trim (Machine Only) & Hot Towels</h3>
+                            <p class="service-description">A precise beard trim using clippers, finished with relaxing
+                                hot towels.</p>
+                        </div>
+                        <span class="service-price">$20</span>
+                    </div>
+
+                    <div class="service-item">
+                        <div class="service-details">
+                            <h3>Mon-Wed Special: Haircut & Shave</h3>
+                            <p class="service-description">Get our classic haircut and shave combo at a special price.
+                            </p>
+                            <p class="service-note">$10 saving, only Monday - Wednesday!</p>
+                        </div>
+                        <span class="service-price">$60</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; <span id="currentYear"></span> Level 78 Barber. All Rights Reserved.</p>
+        <p>Modern Design Inspired by Contemporary Aesthetics | <a href="#">Privacy Policy</a></p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile navigation toggle
+            const mobileMenuButton = document.getElementById('mobileMenuToggle');
+            const navMenu = document.getElementById('navLinks');
+            const headerCTA = document.querySelector('.header-cta');
+
+            if (mobileMenuButton && navMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    const isExpanded = navMenu.classList.contains('active');
+                    mobileMenuButton.setAttribute('aria-expanded', isExpanded);
+                    if (headerCTA) {
+                        if (isExpanded) {
+                            headerCTA.style.display = 'none';
+                        } else {
+                            if (window.innerWidth > 768) headerCTA.style.display = 'inline-block';
+                            else headerCTA.style.display = 'none';
+                        }
+                    }
+                });
+            }
+
+            function adjustHeaderCTAVisibility() {
+                if (headerCTA) {
+                    const isMobileMenuOpen = navMenu && navMenu.classList.contains('active');
+                    if (window.innerWidth <= 768) {
+                        headerCTA.style.display = 'none';
+                        if (isMobileMenuOpen) {
+                            headerCTA.style.display = 'none';
+                        }
+                    } else {
+                        headerCTA.style.display = 'inline-block';
+                        if (navMenu && navMenu.classList.contains('active')) {
+                            navMenu.classList.remove('active');
+                            if (mobileMenuButton) mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        }
+                    }
+                }
+            }
+            adjustHeaderCTAVisibility();
+            window.addEventListener('resize', adjustHeaderCTAVisibility);
+
+            const currentYearSpan = document.getElementById('currentYear');
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+        });
+    </script>
+</body>
+
+</html>
