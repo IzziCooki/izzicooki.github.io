@@ -120,6 +120,22 @@ function handleFormSubmit(event) {
     statusDiv.className = 'form-status success';
   });
 }
+
+// Intersection Observer for section animations
+const sectionObserver = new IntersectionObserver(
+    (entries) => {
+        entries.forEach(entry => {
+            // Don't remove the observer, just toggle the class based on visibility
+            entry.target.classList.toggle('visible', entry.isIntersecting);
+        });
+    },
+    {
+        root: null,
+        threshold: 0.15,
+        rootMargin: '0px'
+    }
+);
+
 document.addEventListener('DOMContentLoaded', function () {
   fetchProjects();
   setupPagination();
@@ -141,4 +157,9 @@ document.addEventListener('DOMContentLoaded', function () {
   closeBtn === null || closeBtn === void 0 || closeBtn.addEventListener('click', closeProjectPopup);
   var contactForm = document.querySelector('.contact-form');
   contactForm === null || contactForm === void 0 || contactForm.addEventListener('submit', handleFormSubmit);
+
+  // Add section observers
+  document.querySelectorAll('.section').forEach(section => {
+    sectionObserver.observe(section);
+  });
 });
