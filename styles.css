@@ -265,7 +265,8 @@ header {
     color: var(--light-text);
     padding: 0.75rem 1.25rem;
     border-radius: 0.75rem;
-    white-space: nowrap;
+    max-width: 200px; /* Constrain width to prevent overflow */
+    text-align: center; /* Center text within the popup */
     opacity: 0;
     pointer-events: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
