@@ -7,6 +7,13 @@
         "details": "Redesigned website for Level 78 Barbershop in NYC."
     },
     {
+        "title": "3D Interactive Portfolio",
+        "desc": "3D Interactive Portfolio using Three.js",
+        "image": "https://i.ibb.co/d4CswJmq/3dportfolio.png",
+        "link": "https://deanhauser3dportfolio.w3spaces-preview.com/index.html",
+        "details": "3D Interactive Portfolio using Three.js."
+    },
+    {
         "title": "cos320-Final",
         "desc": "Final project for COS320. Written in Python.",
         "image": "https://opengraph.githubassets.com/1/IzziCooki/cos320-Final",
