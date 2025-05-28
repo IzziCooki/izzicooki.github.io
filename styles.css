@@ -122,15 +122,6 @@ header a:hover {
   margin-bottom: 4rem;
   width: 100%;
   max-width: 1000px;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-  will-change: opacity, transform;
-}
-
-.section.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .section h2 {
@@ -470,6 +461,8 @@ header a:hover {
   transition: opacity 0.3s ease, -webkit-transform 0.3s ease;
   transition: transform 0.3s ease, opacity 0.3s ease;
   transition: transform 0.3s ease, opacity 0.3s ease, -webkit-transform 0.3s ease;
+  -webkit-animation: popupZoom 0.3s ease forwards;
+          animation: popupZoom 0.3s ease forwards;
 }
 
 .popup-modal {
@@ -909,6 +902,12 @@ header a:hover {
     margin-top: 1.5rem;
     -webkit-transform: scale(0.9);
             transform: scale(0.9);
+  }
+  /* NEWLY ADDED STYLES FOR .layer-blur */
+  .layer-blur {
+    -webkit-box-shadow: 0 0 100px 5px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 100px 5px rgba(255, 255, 255, 0.5); /* Adjusted blur */
+    width: 15rem; /* Adjusted width */
   }
 }
 .project-image {
