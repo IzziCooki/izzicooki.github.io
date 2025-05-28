@@ -1,0 +1,58 @@
+[
+ {
+        "title": "Level 78 Barbershop",
+        "desc": "Redesigned website for Level 78 Barbershop in NYC",
+        "image": "https://img1.wsimg.com/isteam/ip/3d27f00d-0faf-400b-9e7d-8e11d3842896/fb_183143192455787_1440x1440.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:1342,cg=true",
+        "link": "http://level78barber.w3spaces.com/",
+        "details": "Redesigned website for Level 78 Barbershop in NYC."
+    },
+    {
+        "title": "3D Interactive Portfolio",
+        "desc": "3D Interactive Portfolio using Three.js",
+        "image": "https://i.ibb.co/d4CswJmq/3dportfolio.png",
+        "link": "https://deanhauser3dportfolio.w3spaces.com",
+        "details": "3D Interactive Portfolio using Three.js."
+    },
+    {
+        "title": "cos320-Final",
+        "desc": "Final project for COS320. Written in Python.",
+        "image": "https://opengraph.githubassets.com/1/IzziCooki/cos320-Final",
+        "link": "https://github.com/IzziCooki/cos320-Final",
+        "details": "This is the final project submission for my COS320 class, showcasing advanced Python skills."
+    },
+    {
+        "title": "EbayViewsBot",
+        "desc": "Discord bot that simulates views for eBay listings.",
+        "image": "https://opengraph.githubassets.com/1/IzziCooki/EbayViewsBot",
+        "link": "https://github.com/IzziCooki/EbayViewsBot",
+        "details": "A Discord bot designed to generate views on eBay listings. Built using Python."
+    },
+    {
+        "title": "AlphaVAPI",
+        "desc": "Python wrapper for Alpha Vantage stock API.",
+        "image": "https://opengraph.githubassets.com/1/IzziCooki/AlphaVAPI",
+        "link": "https://github.com/IzziCooki/AlphaVAPI",
+        "details": "A lightweight Python wrapper built to interact with the Alpha Vantage API for stock and financial data."
+    },
+    {
+        "title": "amazon-scraping",
+        "desc": "Python scripts to scrape Amazon data.",
+        "image": "https://opengraph.githubassets.com/1/IzziCooki/amazon-scraping",
+        "link": "https://github.com/IzziCooki/amazon-scraping",
+        "details": "A set of Python scripts to scrape product information from Amazon. Intended for educational purposes."
+    },
+    {
+        "title": "shoes",
+        "desc": "An online shoe store front-end project.",
+        "image": "https://opengraph.githubassets.com/1/IzziCooki/shoes",
+        "link": "https://github.com/IzziCooki/shoes",
+        "details": "A stylish online shoe store UI/UX project. Built to practice front-end development techniques."
+    },
+    {
+        "title": "Q_AND_A_FLASK_WEBSITE",
+        "desc": "A question and answer website built using Flask.",
+        "image": "https://opengraph.githubassets.com/1/IzziCooki/Q_And_A_Flask_Website",
+        "link": "https://github.com/IzziCooki/Q_And_A_Flask_Website",
+        "details": "A Flask web application that allows users to ask and answer questions. Built with Python, Flask, and HTML/CSS."
+    }
+]
