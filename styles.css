@@ -271,7 +271,7 @@ header a:hover {
   transition: opacity 0.4s ease, transform 0.4s ease;
   transition: opacity 0.4s ease, transform 0.4s ease, -webkit-transform 0.4s ease;
 }
-
+<!-- 
 .skill-container:hover .skill-popup {
   opacity: 1;
   -webkit-transform: translateX(-50%) scale(1);
@@ -279,7 +279,7 @@ header a:hover {
   -webkit-animation: bounceUp 0.6s ease;
           animation: bounceUp 0.6s ease;
 }
-
+-->
 .contact-form {
   display: -webkit-box;
   display: -ms-flexbox;
