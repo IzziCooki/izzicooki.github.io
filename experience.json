@@ -1,0 +1,37 @@
+[
+    {
+        "title": "Freelance Developer",
+        "date": "2020 - Present",
+        "details": [
+            "Develop fullstack websites using MERN stack, Python, and other frameworks",
+            "Create custom automation and webscraping programs",
+            "Create custom monitoring Discord Bots"
+        ]
+    },
+    {
+        "title": "EHP Resort and Marina",
+        "date": "June 2023 - August 2024",
+        "details": [
+            "Drove resort guests and celebrities to and from beach, shopping area, and restaurants",
+            "Ensured guests needs were responded to in a timely manner",
+            "Provided in-house technology support"
+        ]
+    },
+    {
+        "title": "Maidstone Club",
+        "date": "June 2021 - August 2022",
+        "details": [
+            "Ensured the safety of all children in area around the pool",
+            "Conducted safety and cleanliness inspections of pool facilities",
+            "Obtained American Red Cross First Aid, CPR and AED certification"
+        ]
+    },
+    {
+        "title": "Town of East Hampton",
+        "date": "July 2020 - August 2021",
+        "details": [
+            "Supervised activities on the beach to ensure safety for all patrons",
+            "Kept rescue equipment in good working order by inspecting it and performing basic repairs"
+        ]
+    }
+]

@@ -1,162 +1,633 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="description" content="Dean Hauser's Portfolio - Freelance Developer specializing in web development and automation" />
     <meta name="keywords" content="portfolio, web development, freelance, automation, MERN stack" />
     <meta name="author" content="Dean Hauser" />
     <title>Dean Hauser Portfolio</title>
-    <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <script src="https://cdn.jsdelivr.net/npm/contentful@9.0.1/dist/contentful.browser.min.js"></script>
-</head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://web3forms.com/client/script.js" async defer></script>
+    <script src="https://js.hcaptcha.com/1.0/api.js" async defer></script>
+    <style>
+        /* Custom CSS for animations and base styles */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-<body>
-    <header>
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #eaeaea;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .scroll-indicator-animation {
+            animation: scrollBounce 1.5s infinite;
+        }
+
+        .project-card-animation {
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        .skill-popup-animation {
+            animation: bounceUp 0.6s ease;
+        }
+
+        .popup-modal-animation {
+            animation: popupExpand 0.5s ease forwards;
+        }
+
+        .shimmer-animation {
+            animation: shimmer 2s infinite;
+        }
+
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scrollBounce {
+            0% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                opacity: 0.5;
+                transform: translateX(-50%) translateY(10px);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+        }
+
+        @keyframes bounceUp {
+            0% {
+                transform: translateX(-50%) translateY(10px) scale(0.95);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-6px) scale(1.05);
+            }
+            100% {
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+        }
+
+        @keyframes popupZoom {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes popupExpand {
+            0% {
+                transform: scaleX(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scaleX(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scaleX(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        main {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        .container {
+            width: 100%;
+            padding-right: 1rem;
+            padding-left: 1rem;
+            margin-right: auto;
+            margin-left: auto;
+            box-sizing: border-box;
+        }
+
+        .hero-radial-gradient::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(51, 51, 51, 0.1) 0%, transparent 70%);
+            z-index: -1;
+            width: 100%;
+        }
+
+        /* Add these rules to your existing styles */
+        .h-captcha > iframe {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background-color: rgb(17, 24, 39);
+            border: 1px solid rgb(55, 65, 81);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-950 text-gray-100 font-inter relative">
+    <div class="absolute top-0 right-0 w-full h-full opacity-50 z-0 pointer-events-none">
+        <img class="absolute top-0 right-0 w-full h-full object-cover" src="gradient.png" alt="background gradient" onerror="this.onerror=null;this.src='https://placehold.co/1920x1080/0a0a0a/0a0a0a?text=Background+Gradient';"/>
+    </div>
+    <div class="absolute top-1/5 right-0 h-0 w-96 shadow-[0_0_700px_15px_rgba(255,255,255,0.8)] rotate-[-30deg] z-0 pointer-events-none"></div>
+
+    <header class="w-full py-4 px-8 bg-gray-900 bg-opacity-90 backdrop-blur-md flex justify-end gap-8 sticky top-0 z-50 shadow-lg rounded-b-xl">
+        <a href="#projects" class="text-gray-400 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 ease-in-out">Projects</a>
+        <a href="#skills" class="text-gray-400 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 ease-in-out">Skills</a>
+        <a href="#experience" class="text-gray-400 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 ease-in-out">Experience</a>
+        <a href="#education" class="text-gray-400 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 ease-in-out">Education</a>
+        <a href="#about" class="text-gray-400 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 ease-in-out">About</a>
+        <a href="#contact" class="text-gray-400 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 ease-in-out">Contact</a>
     </header>
-    <main class="container">
-        <section class="hero">
-            <img class="avatar" src="person.jpg" alt="Dean Hauser Avatar" />
-            <h1>Dean Hauser</h1>
-            <p>Freelance Developer</p>
-            <a href="#projects" class="scroll-link">
-                <div class="scroll-indicator">
-                    <span class="scroll-line"></span>
+
+    <main class="w-full px-4 py-8 relative z-10 overflow-x-hidden">
+        <section class="min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden animate-fadeInUp hero-radial-gradient">
+            <img class="w-64 h-64 rounded-full object-cover border-4 border-gray-200 mb-8 shadow-xl animate-fadeInUp" src="https://izzicooki.github.io/person.jpg" alt="Dean Hauser Avatar" onerror="this.onerror=null;this.src='https://placehold.co/255x255/333/FFF?text=Avatar';"/>
+            <h1 class="text-5xl md:text-6xl font-bold mb-2 text-white animate-fadeInUp" style="animation-delay: 0.2s;">Dean Hauser</h1>
+            <p class="text-2xl md:text-3xl text-gray-400 mb-8 animate-fadeInUp" style="animation-delay: 0.4s;">Freelance Developer</p>
+            <a href="#projects" class="scroll-link animate-fadeInUp" style="animation-delay: 1s;">
+                <div class="w-6 h-10 border-2 border-gray-700 rounded-xl relative shadow-md">
+                    <span class="absolute top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-700 rounded-sm scroll-indicator-animation shadow-sm"></span>
                 </div>
             </a>
         </section>
 
-        <section id="projects" class="section" style="scroll-margin-top: 100px;">
-            <h2>Projects</h2>
-            <div class="projects"></div>
-            <div class="pagination">
-                <button>&laquo; Prev</button>
-                <button>Next &raquo;</button>
+        <section id="projects" class="section-fade-in my-16 p-8 max-w-5xl mx-auto">
+            <h2 class="text-4xl font-bold mb-8 text-center text-white border-b-2 border-gray-700 pb-4">Projects</h2>
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            <div class="flex justify-center gap-4 mt-12">
+                <button id="prev-page" class="bg-gray-700 text-white px-6 py-3 rounded-lg shadow-md hover:bg-gray-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    &laquo; Prev
+                </button>
+                <button id="next-page" class="bg-gray-700 text-white px-6 py-3 rounded-lg shadow-md hover:bg-gray-600 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Next &raquo;
+                </button>
             </div>
         </section>
 
-        <section id="skills" class="section">
-            <h2>Skills</h2>
-            <div class="skills">
-                <div class="skill-container">
-                    <span class="skill-tag">HTML</span>
-                    <div class="skill-popup">Structure web content with semantic tags and accessibility.</div>
+        <section id="skills" class="section-fade-in my-16 p-8 max-w-5xl mx-auto">
+            <h2 class="text-4xl font-bold mb-8 text-center text-white border-b-2 border-gray-700 pb-4">Skills</h2>
+            <div id="skills-container" class="flex flex-wrap justify-center gap-4 mt-8">
                 </div>
-                <div class="skill-container">
-                    <span class="skill-tag">CSS</span>
-                    <div class="skill-popup">Style and layout content using Flexbox, Grid, and animations.</div>
-                </div>
-                <div class="skill-container">
-                    <span class="skill-tag">JavaScript</span>
-                    <div class="skill-popup">Add interactivity, logic, and dynamic content to web pages.</div>
-                </div>
-                <div class="skill-container">
-                    <span class="skill-tag">React</span>
-                    <div class="skill-popup">Build reactive, component-based UIs using JSX and hooks.</div>
-                </div>
-                <div class="skill-container">
-                    <span class="skill-tag">Node.js</span>
-                    <div class="skill-popup">Write server-side code with Express and RESTful APIs.</div>
-                </div>
-                <div class="skill-container">
-                    <span class="skill-tag">MongoDB</span>
-                    <div class="skill-popup">Work with NoSQL databases for scalable backend storage.</div>
-                </div>
-                <div class="skill-container">
-                    <span class="skill-tag">Git</span>
-                    <div class="skill-popup">Version control your code and collaborate with GitHub.</div>
-                </div>
-                <div class="skill-container">
-                    <span class="skill-tag">REST APIs</span>
-                    <div class="skill-popup">Connect frontends and backends using structured HTTP APIs.</div>
-                </div>
-                <div class="skill-container">
-                    <span class="skill-tag">Figma</span>
-                    <div class="skill-popup">Design wireframes, prototypes, and UI layouts collaboratively.</div>
-                </div>
-            </div>
         </section>
 
-        <section id="experience" class="section">
-            <h2>Experience</h2>
-            <div class="experience-timeline">
-                <div class="experience-item">
-                    <h3>Freelance Developer</h3>
-                    <p class="experience-date">2020 - Present</p>
-                    <ul class="experience-details">
-                        <li>Develop fullstack websites using MERN stack, Python, and other frameworks</li>
-                        <li>Create custom automation and webscraping programs</li>
-                        <li>Create custom monitoring Discord Bots</li>
-                    </ul>
+        <section id="experience" class="section-fade-in my-16 p-8 max-w-5xl mx-auto">
+            <h2 class="text-4xl font-bold mb-8 text-center text-white border-b-2 border-gray-700 pb-4">Experience</h2>
+            <div id="experience-timeline" class="relative pl-8 md:pl-16 mt-8">
+                <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-700"></div>
                 </div>
-            </div>
         </section>
 
-        <section id="education" class="section">
-            <h2>Education</h2>
-            <div class="education-timeline">
-                <div class="education-item">
-                    <h3>University of Maine</h3>
-                    <p class="education-degree">Bachelor of Science in Computer Science</p>
-                    <p class="education-date">Expected Graduation: 2026</p>
-                    <ul class="education-details">
-                        <li>Relevant Courses: Software Development, Client-Side Web Development, Discrete Structures</li>
-                    </ul>
+        <section id="education" class="section-fade-in my-16 p-8 max-w-5xl mx-auto">
+            <h2 class="text-4xl font-bold mb-8 text-center text-white border-b-2 border-gray-700 pb-4">Education</h2>
+            <div id="education-timeline" class="relative pl-8 md:pl-16 mt-8">
+                <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-700"></div>
                 </div>
-            </div>
         </section>
 
-        <section id="about" class="section">
-            <h2>About Me</h2>
-            <p>I'm a Computer Science major at the University of Maine in Orono with a passion for solving real-world problems through
-            technology. As a freelance developer, I specialize in building custom automation scripts tailored to my clients' needs,
-            helping them streamline processes and improve efficiency. I'm committed to writing clean, scalable code and continually
-            expanding my skill set to deliver high-quality, impactful solutions.</p>
-            <a href="resume.pdf" target="_blank" class="resume-button">View Resume</a>
+        <section id="about" class="section-fade-in my-16 p-8 max-w-5xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8 text-center text-white border-b-2 border-gray-700 pb-4">About Me</h2>
+            <p class="text-lg text-gray-300 mb-8 leading-relaxed">
+                I'm a Computer Science major at the University of Maine in Orono with a passion for solving real-world problems through
+                technology. As a freelance developer, I specialize in building custom automation scripts tailored to my clients' needs,
+                helping them streamline processes and improve efficiency. I'm committed to writing clean, scalable code and continually
+                expanding my skill set to deliver high-quality, impactful solutions.
+            </p>
+            <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="inline-block bg-gradient-to-r from-blue-600 to-blue-800 text-white px-8 py-3 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-blue-900 transition-all duration-300 shadow-lg">
+                View Resume
+            </a>
         </section>
 
-        <section id="contact" class="section">
-            <section id="contact-form" class="section">
-                <h2>Contact</h2>
-                <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
-                    <input type="hidden" name="access_key" value="8ca4abe5-035d-40f5-823b-603497dd1db6">
-                    <input type="hidden" name="redirect" value="https://yourdomain.com/src/index.html">
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="Your Name" required />
-                    </div>
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="Your Email" required />
-                    </div>
-                    <div class="form-group">
-                        <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-                    </div>
-                    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-                    <div class="h-captcha" data-captcha="true"></div>
-                    <button type="submit">Send Message</button>
-                    <div id="form-status" class="form-status"></div>
-                </form>
-            </section>
+        <section id="contact" class="section-fade-in my-16 p-8 max-w-5xl mx-auto">
+            <h2 class="text-4xl font-bold mb-8 text-center text-white border-b-2 border-gray-700 pb-4">Contact</h2>
+            <form id="contact-form" class="flex flex-col gap-6 max-w-2xl mx-auto bg-gray-800 p-8 rounded-xl shadow-lg" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="8ca4abe5-035d-40f5-823b-603497dd1db6">
+                <input type="hidden" name="subject" value="Dean Hauser Contact Form Submission">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Your Name" required 
+                        class="w-full bg-gray-900 border border-gray-700 px-5 py-3 rounded-lg text-white placeholder-gray-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 transition-all duration-300" />
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Your Email" required 
+                        class="w-full bg-gray-900 border border-gray-700 px-5 py-3 rounded-lg text-white placeholder-gray-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 transition-all duration-300" />
+                </div>
+                
+                <div class="form-group">
+                    <textarea name="message" rows="6" placeholder="Your Message" required 
+                        class="w-full bg-gray-900 border border-gray-700 px-5 py-3 rounded-lg text-white placeholder-gray-500 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 transition-all duration-300"></textarea>
+                </div>
+
+                <!-- Replace the existing hCaptcha div with this one -->
+                <div class="form-group flex justify-center">
+                    <div class="h-captcha" data-captcha="true" data-theme="dark"></div>
+                </div>
+                
+                <button type="submit" class="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-8 py-3 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-blue-900 transition-all duration-300 shadow-lg relative overflow-hidden group">
+                    <span class="relative z-10">Send Message</span>
+                    <span class="absolute inset-0 bg-white opacity-10 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></span>
+                </button>
+                
+                <div id="form-status" class="mt-4 p-3 rounded-lg text-center text-sm"></div>
+            </form>
         </section>
     </main>
-    <img class="image-gradient" src="gradient.png" alt="gradient">
-    <div class="layer-blur"></div>
-    <div class="popup-modal" id="project-modal">
-        <div class="popup-content">
-            <button class="popup-close" id="popup-close">&times;</button>
-            <h3 id="popup-title">Project Title</h3>
-            <a id="popup-image-link" href="#" target="_blank">
-                <img id="popup-image" src="" alt="Project image">
+
+    <div id="project-modal" class="fixed inset-0 bg-gray-950 bg-opacity-90 backdrop-blur-lg flex items-center justify-center z-50 p-4 hidden popup-modal-animation">
+        <div class="bg-gray-800 text-white p-8 rounded-2xl shadow-2xl max-w-3xl w-full flex flex-col items-center relative max-h-[90vh] overflow-y-auto">
+            <button id="popup-close" class="absolute top-4 right-4 text-gray-400 hover:text-white text-4xl font-light transition-colors duration-300">
+                &times;
+            </button>
+            <h3 id="popup-title" class="text-3xl font-bold mb-4 text-white">Project Title</h3>
+            <a id="popup-image-link" href="#" target="_blank" rel="noopener noreferrer" class="block mb-6">
+                <img id="popup-image" src="" alt="Project image" class="w-full max-w-xl h-auto object-cover rounded-xl shadow-lg transition-transform duration-300 hover:scale-105" onerror="this.onerror=null;this.src='https://placehold.co/600x400/555/EEE?text=Project';"/>
             </a>
-            <p id="popup-desc">Description goes here...</p>
+            <p id="popup-desc" class="text-gray-300 text-lg mb-6 text-center">Description goes here...</p>
+            <a id="popup-view-project" href="#" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-blue-600 to-blue-800 text-white px-8 py-3 rounded-full text-lg font-semibold hover:from-blue-700 hover:to-blue-900 transition-all duration-300 shadow-lg">
+                View Project
+            </a>
         </div>
     </div>
+
+    <script>
+        // Project Data (from data.json)
+        const projectData = [
+            {
+                "title": "Level 78 Barbershop",
+                "desc": "Redesigned website for Level 78 Barbershop in NYC",
+                "image": "https://img1.wsimg.com/isteam/ip/3d27f00d-0faf-400b-9e7d-8e11d3842896/fb_183143192455787_1440x1440.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:1342,cg=true",
+                "link": "http://level78barber.w3spaces.com/",
+                "details": "Redesigned website for Level 78 Barbershop in NYC."
+            },
+            {
+                "title": "3D Interactive Portfolio",
+                "desc": "3D Interactive Portfolio using Three.js",
+                "image": "https://i.ibb.co/d4CswJmq/3dportfolio.png",
+                "link": "https://deanhauser3dportfolio.w3spaces.com",
+                "details": "3D Interactive Portfolio using Three.js."
+            },
+            {
+                "title": "cos320-Final",
+                "desc": "Final project for COS320. Written in Python.",
+                "image": "https://opengraph.githubassets.com/1/IzziCooki/cos320-Final",
+                "link": "https://github.com/IzziCooki/cos320-Final",
+                "details": "This is the final project submission for my COS320 class, showcasing advanced Python skills."
+            },
+            {
+                "title": "EbayViewsBot",
+                "desc": "Discord bot that simulates views for eBay listings.",
+                "image": "https://opengraph.githubassets.com/1/IzziCooki/EbayViewsBot",
+                "link": "https://github.com/IzziCooki/EbayViewsBot",
+                "details": "A Discord bot designed to generate views on eBay listings. Built using Python."
+            },
+            {
+                "title": "AlphaVAPI",
+                "desc": "Python wrapper for Alpha Vantage stock API.",
+                "image": "https://opengraph.githubassets.com/1/IzziCooki/AlphaVAPI",
+                "link": "https://github.com/IzziCooki/AlphaVAPI",
+                "details": "A lightweight Python wrapper built to interact with the Alpha Vantage API for stock and financial data."
+            },
+            {
+                "title": "amazon-scraping",
+                "desc": "Python scripts to scrape Amazon data.",
+                "image": "https://opengraph.githubassets.com/1/IzziCooki/amazon-scraping",
+                "link": "https://github.com/IzziCooki/amazon-scraping",
+                "details": "A set of Python scripts to scrape product information from Amazon. Intended for educational purposes."
+            },
+            {
+                "title": "shoes",
+                "desc": "An online shoe store front-end project.",
+                "image": "https://opengraph.githubassets.com/1/IzziCooki/shoes",
+                "link": "https://github.com/IzziCooki/shoes",
+                "details": "A stylish online shoe store UI/UX project. Built to practice front-end development techniques."
+            },
+            {
+                "title": "Q_AND_A_FLASK_WEBSITE",
+                "desc": "A question and answer website built using Flask.",
+                "image": "https://opengraph.githubassets.com/1/IzziCooki/Q_And_A_Flask_Website",
+                "link": "https://github.com/IzziCooki/Q_And_A_Flask_Website",
+                "details": "A Flask web application that allows users to ask and answer questions. Built with Python, Flask, and HTML/CSS."
+            }
+        ];
+
+        // Skills Data
+        const skillsData = [
+            { name: 'HTML', desc: 'Structure web content with semantic tags and accessibility.' },
+            { name: 'CSS', desc: 'Style and layout content using Flexbox, Grid, and animations.' },
+            { name: 'JavaScript', desc: 'Add interactivity, logic, and dynamic content to web pages.' },
+            { name: 'React', desc: 'Build reactive, component-based UIs using JSX and hooks.' },
+            { name: 'Node.js', desc: 'Write server-side code with Express and RESTful APIs.' },
+            { name: 'MongoDB', desc: 'Work with NoSQL databases for scalable backend storage.' },
+            { name: 'Git', desc: 'Version control your code and collaborate with GitHub.' },
+            { name: 'REST APIs', desc: 'Connect frontends and backends using structured HTTP APIs.' },
+            { name: 'Figma', desc: 'Design wireframes, prototypes, and UI layouts collaboratively.' },
+        ];
+
+        // Experience Data
+        const experienceData = [
+            {
+                title: 'Freelance Developer',
+                date: '2020 - Present',
+                details: [
+                    'Develop fullstack websites using MERN stack, Python, and other frameworks',
+                    'Create custom automation and webscraping programs',
+                    'Create custom monitoring Discord Bots',
+                ]
+            }
+        ];
+
+        // Education Data
+        const educationData = [
+            {
+                institution: 'University of Maine',
+                degree: 'Bachelor of Science in Computer Science',
+                date: 'Expected Graduation: 2026',
+                details: [
+                    'Relevant Courses: Software Development, Client-Side Web Development, Discrete Structures',
+                ],
+            }
+        ];
+
+        let currentPage = 1;
+        const projectsPerPage = 3;
+
+        // Intersection Observer for section animations
+        const sectionObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    entry.target.classList.toggle('visible', entry.isIntersecting);
+                });
+            },
+            {
+                root: null,
+                threshold: 0.15, // Trigger when 15% of the section is visible
+                rootMargin: '0px'
+            }
+        );
+
+        function renderProjects() {
+            const projectsGrid = document.getElementById('projects-grid');
+            if (!projectsGrid) return;
+
+            projectsGrid.innerHTML = '';
+            const start = (currentPage - 1) * projectsPerPage;
+            const end = start + projectsPerPage;
+            const currentProjects = projectData.slice(start, end);
+
+            currentProjects.forEach((proj, index) => {
+                const projectCard = document.createElement('div');
+                projectCard.className = `bg-gray-800 p-6 rounded-xl shadow-lg transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-2xl opacity-0 transform translate-y-[30px] project-card-animation relative overflow-hidden cursor-pointer`;
+                projectCard.style.animationDelay = `${index * 0.1}s`;
+                projectCard.innerHTML = `
+                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-700 to-gray-500"></div>
+                    <img src="${proj.image}" alt="${proj.title}" class="w-full h-40 object-cover rounded-lg mb-4 relative overflow-hidden" onerror="this.onerror=null;this.src='https://placehold.co/400x200/555/EEE?text=${proj.title.replace(/\s/g, '+')}';" />
+                    <h3 class="text-xl font-semibold mb-2 text-white">${proj.title}</h3>
+                    <p class="text-gray-400 text-sm">${proj.desc}</p>
+                `;
+                projectCard.addEventListener('click', () => openProjectModal(proj));
+                projectsGrid.appendChild(projectCard);
+            });
+
+            updatePaginationButtons();
+        }
+
+        function updatePaginationButtons() {
+            const prevButton = document.getElementById('prev-page');
+            const nextButton = document.getElementById('next-page');
+
+            if (prevButton) prevButton.disabled = currentPage === 1;
+            if (nextButton) nextButton.disabled = currentPage * projectsPerPage >= projectData.length;
+        }
+
+        function setupPagination() {
+            const prevButton = document.getElementById('prev-page');
+            const nextButton = document.getElementById('next-page');
+
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderProjects();
+                }
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (currentPage * projectsPerPage < projectData.length) {
+                    currentPage++;
+                    renderProjects();
+                }
+            });
+        }
+
+        function openProjectModal(project) {
+            const modal = document.getElementById('project-modal');
+            const title = document.getElementById('popup-title');
+            const desc = document.getElementById('popup-desc');
+            const image = document.getElementById('popup-image');
+            const imageLink = document.getElementById('popup-image-link');
+            const viewProjectButton = document.getElementById('popup-view-project');
+
+            if (modal && title && desc && image && imageLink && viewProjectButton) {
+                title.textContent = project.title;
+                desc.textContent = project.details;
+                image.src = project.image;
+                image.alt = project.title;
+                imageLink.href = project.link;
+                viewProjectButton.href = project.link;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Lock scroll
+            }
+        }
+
+        function closeProjectModal() {
+            const modal = document.getElementById('project-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Unlock scroll
+            }
+        }
+
+        function renderSkills() {
+            const skillsContainer = document.getElementById('skills-container');
+            if (!skillsContainer) return;
+
+            skillsData.forEach((skill, index) => {
+                const skillDiv = document.createElement('div');
+                skillDiv.className = 'relative group inline-block';
+                skillDiv.innerHTML = `
+                    <span class="bg-gray-900 border border-gray-700 text-gray-300 px-5 py-2 rounded-full text-sm transition-all duration-300 ease-in-out hover:bg-gray-700 hover:text-white hover:translate-y-[-2px] shadow-md backdrop-blur-sm">
+                        ${skill.name}
+                    </span>
+                    <div class="absolute bottom-[125%] left-1/2 -translate-x-1/2 bg-gray-700 text-white px-4 py-2 rounded-lg whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:translate-y-0 skill-popup-animation shadow-xl">
+                        ${skill.desc}
+                    </div>
+                `;
+                skillsContainer.appendChild(skillDiv);
+            });
+        }
+
+        function renderExperience() {
+            const experienceTimeline = document.getElementById('experience-timeline');
+            if (!experienceTimeline) return;
+
+            experienceData.forEach((exp, index) => {
+                const expDiv = document.createElement('div');
+                expDiv.className = 'relative mb-8 p-6 bg-gray-800 rounded-xl shadow-lg transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-2xl';
+                expDiv.innerHTML = `
+                    <div class="absolute left-[-2.25rem] top-1/2 -translate-y-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-gray-900 shadow-md"></div>
+                    <h3 class="text-2xl font-semibold text-white mb-1">${exp.title}</h3>
+                    <p class="text-gray-400 text-sm mb-3">${exp.date}</p>
+                    <ul class="list-none p-0 m-0">
+                        ${exp.details.map(detail => `<li class="relative pl-6 mb-1 text-gray-300 before:content-['•'] before:absolute before:left-0 before:text-blue-600">${detail}</li>`).join('')}
+                    </ul>
+                `;
+                experienceTimeline.appendChild(expDiv);
+            });
+        }
+
+        function renderEducation() {
+            const educationTimeline = document.getElementById('education-timeline');
+            if (!educationTimeline) return;
+
+            educationData.forEach((edu, index) => {
+                const eduDiv = document.createElement('div');
+                eduDiv.className = 'relative mb-8 p-6 bg-gray-800 rounded-xl shadow-lg transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-2xl';
+                eduDiv.innerHTML = `
+                    <div class="absolute left-[-2.25rem] top-1/2 -translate-y-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-gray-900 shadow-md"></div>
+                    <h3 class="text-2xl font-semibold text-white mb-1">${edu.institution}</h3>
+                    <p class="text-gray-400 text-sm mb-1">${edu.degree}</p>
+                    <p class="text-gray-400 text-sm mb-3">${edu.date}</p>
+                    <ul class="list-none p-0 m-0">
+                        ${edu.details.map(detail => `<li class="relative pl-6 mb-1 text-gray-300 before:content-['•'] before:absolute before:left-0 before:text-blue-600">${detail}</li>`).join('')}
+                    </ul>
+                `;
+                educationTimeline.appendChild(eduDiv);
+            });
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const statusDiv = document.getElementById('form-status');
+            if (!statusDiv) return;
+
+            statusDiv.textContent = 'Sending message...';
+            statusDiv.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-gray-700 text-white';
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    statusDiv.textContent = 'Message sent successfully!';
+                    statusDiv.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-green-600 text-white';
+                    form.reset();
+                } else {
+                    throw new Error('Failed to send message');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                statusDiv.textContent = 'Failed to send message. Please try again.';
+                statusDiv.className = 'mt-4 p-3 rounded-lg text-center text-sm bg-red-600 text-white';
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Render dynamic content
+            renderProjects();
+            renderSkills();
+            renderExperience();
+            renderEducation();
+
+            // Setup event listeners
+            setupPagination();
+            document.getElementById('popup-close').addEventListener('click', closeProjectModal);
+            document.getElementById('contact-form').addEventListener('submit', handleFormSubmit);
+
+            // Observe sections for fade-in animation
+            document.querySelectorAll('section.section-fade-in').forEach(section => {
+                sectionObserver.observe(section);
+            });
+
+            // Smooth scroll for header links
+            document.querySelectorAll('header a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Smooth scroll for hero scroll link
+            document.querySelector('.hero .scroll-link').addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
-<script src="https://web3forms.com/client/script.js" async defer></script>
-<script src="index.js"></script>
 </html>
