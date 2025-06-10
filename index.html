@@ -60,6 +60,24 @@
             overflow-x: hidden;
         }
         
+        /* Sophisticated Background Gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at top left, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at top right, rgba(147, 51, 234, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
         /* Typography */
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Space Grotesk', sans-serif;
@@ -566,11 +584,10 @@
             margin-bottom: 0.5rem;
             color: var(--gray-600);
         }
-        
-        .form-input, .form-textarea {
+          .form-input, .form-textarea {
             width: 100%;
             padding: 1rem;
-            background: var(--gray-100);
+            background: #eaeaea;
             border: 2px solid transparent;
             border-radius: 10px;
             font-family: inherit;
@@ -1006,7 +1023,7 @@
                 title: "Level 78 Barbershop",
                 description: "Redesigned website for Level 78 Barbershop in NYC",
                 image: "https://img1.wsimg.com/isteam/ip/3d27f00d-0faf-400b-9e7d-8e11d3842896/fb_183143192455787_1440x1440.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:1342,cg=true",
-                link: "http://level78barber.com/",
+                link: "http://level78barber.w3spaces.com/",
                 tech: ["HTML", "CSS", "JavaScript", "Responsive Design"]
             },
             {
