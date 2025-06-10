@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dean Hauser's Technical Blog - Web Development, Programming Tutorials, and Industry Insights">
+    <title>Blog Post - Dean Hauser</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Contentful SDK and Rich Text Renderer -->
+    <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+    <script src="https://unpkg.com/@contentful/rich-text-types@16.2.0/dist/rich-text-types.umd.js"></script>
+    <script src="https://unpkg.com/@contentful/rich-text-html-renderer@16.1.0/dist/rich-text-html-renderer.umd.js"></script>
+    
+    <style>
+        :root {
+            --primary: #0066ff;
+            --primary-dark: #0052cc;
+            --secondary: #1a1a1a;
+            --gray-100: #f7f7f7;
+            --gray-200: #e4e4e4;
+            --gray-300: #d1d1d1;
+            --gray-400: #a3a3a3;
+            --gray-500: #737373;
+            --gray-600: #525252;
+            --max-width: 800px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--secondary);
+            background: var(--gray-100);
+        }
+        
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        /* Loading State */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 50vh;
+            text-align: center;
+            color: var(--gray-500);
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--gray-200);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Error State */
+        .error {
+            text-align: center;
+            padding: 4rem 0;
+            color: #ef4444;
+        }
+        
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        /* Post Header */
+        .post-header {
+            background: white;
+            padding: 4rem 0 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-500);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--primary);
+        }
+        
+        .post-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        
+        .post-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .post-description {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            margin-bottom: 2rem;
+        }
+        
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .post-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .location-link {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .location-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Featured Image */
+        .post-featured-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        
+        /* Image Gallery */
+        .image-gallery {
+            margin: 2rem 0;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Modal for image viewing */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+        
+        .modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary);
+        }
+        
+        /* Post Content */
+        .post-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .post-content h1,
+        .post-content h2,
+        .post-content h3,
+        .post-content h4 {
+            margin: 2rem 0 1rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .post-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .post-content ul,
+        .post-content ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+        
+        .post-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .post-content blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            color: var(--gray-600);
+        }
+        
+        /* Code Blocks */
+        .post-content pre {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        .post-content code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .post-content pre code {
+            color: #e4e4e4;
+        }
+        
+        .post-content p code {
+            background: var(--gray-100);
+            color: var(--primary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+        }
+        
+        /* Reference Section */
+        .post-reference {
+            background: var(--gray-100);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+        
+        .reference-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .reference-content {
+            color: var(--gray-600);
+        }
+        
+        /* Tags */
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+        
+        .tag {
+            padding: 0.25rem 1rem;
+            background: var(--gray-100);
+            border-radius: 20px;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Share Buttons */
+        .share-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin: 2rem 0;
+        }
+        
+        .share-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .share-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: opacity 0.3s ease;
+        }
+        
+        .share-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .share-twitter { background: #1DA1F2; }
+        .share-linkedin { background: #0077B5; }
+        .share-facebook { background: #1877F2; }
+        
+        /* Author Box */
+        .author-box {
+            background: var(--gray-100);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .author-info h3 {
+            margin: 0 0 0.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .author-bio {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .post-title {
+                font-size: 2rem;
+            }
+            
+            .post-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .author-box {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .share-buttons {
+                flex-direction: column;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .post-header {
+                padding: 2rem 0 1rem;
+            }
+            
+            .post-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+    
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <img class="modal-image" id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <article itemscope itemtype="http://schema.org/BlogPosting">
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading blog post...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error" style="display: none;">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2>Post Not Found</h2>
+            <p>The blog post you're looking for could not be found.</p>
+            <a href="blog.html" class="back-link" style="margin-top: 1rem;">
+                <i class="fas fa-arrow-left"></i>
+                Back to Blog
+            </a>
+        </div>
+
+        <!-- Post Content -->
+        <div id="postContent" style="display: none;">
+            <header class="post-header">
+                <div class="container">
+                    <a href="blog.html" class="back-link">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Blog
+                    </a>
+                    <div id="postCategory"></div>
+                    <h1 id="postTitle" class="post-title" itemprop="headline"></h1>
+                    <div id="postDescription" class="post-description"></div>
+                    <div class="post-meta">
+                        <span class="meta-item">
+                            <i class="far fa-calendar"></i>
+                            <span id="postDate" itemprop="datePublished"></span>
+                        </span>
+                        <span class="meta-item">
+                            <i class="far fa-user"></i>
+                            <span id="postAuthor" itemprop="author">Dean Hauser</span>
+                        </span>
+                        <span class="meta-item" id="readingTimeContainer">
+                            <i class="far fa-clock"></i>
+                            <span id="readingTime"></span>
+                        </span>
+                        <div id="postLocation" class="post-location" style="display: none;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <a href="#" id="locationLink" class="location-link" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <main class="container">
+                <!-- Featured Image -->
+                <div id="featuredImageContainer"></div>
+                
+                <!-- Image Gallery -->
+                <div id="imageGallery" class="image-gallery" style="display: none;">
+                    <h3>Gallery</h3>
+                    <div id="galleryGrid" class="gallery-grid"></div>
+                </div>
+                
+                <!-- Post Content -->
+                <div id="postBodyContent" class="post-content"></div>
+                
+                <!-- Reference Section -->
+                <div id="referenceSection" class="post-reference" style="display: none;">
+                    <h3 class="reference-title">References</h3>
+                    <div id="referenceContent" class="reference-content"></div>
+                </div>
+                
+                <!-- Tags -->
+                <div id="postTags" class="post-tags"></div>
+                
+                <!-- Author Box -->
+                <div class="author-box">
+                    <img src="person.jpg" alt="Dean Hauser" class="author-avatar">
+                    <div class="author-info">
+                        <h3>Dean Hauser</h3>
+                        <p class="author-bio">Full-stack developer specializing in modern web applications and automation solutions. Computer Science student at the University of Maine.</p>
+                    </div>
+                </div>
+                
+                <!-- Share Section -->
+                <div class="share-section">
+                    <h3 class="share-title">Share this post</h3>
+                    <div class="share-buttons">
+                        <a href="#" class="share-button share-twitter" id="shareTwitter">
+                            <i class="fab fa-twitter"></i>
+                            Share on Twitter
+                        </a>
+                        <a href="#" class="share-button share-linkedin" id="shareLinkedin">
+                            <i class="fab fa-linkedin"></i>
+                            Share on LinkedIn
+                        </a>
+                        <a href="#" class="share-button share-facebook" id="shareFacebook">
+                            <i class="fab fa-facebook"></i>
+                            Share on Facebook
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </article>
+
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        // Wait for all Contentful libraries to load
+        function initializeContentful() {
+            // Check if all required libraries are loaded
+            if (typeof contentful === 'undefined') {
+                console.error('Contentful SDK not loaded');
+                showError('Failed to load required libraries. Please refresh the page.');
+                return false;
+            }
+
+            // Initialize Rich Text Renderer with fallback
+            let BLOCKS, MARKS, documentToHtmlString;
+
+            try {
+                if (typeof window.RichTextTypes !== 'undefined') {
+                    BLOCKS = window.RichTextTypes.BLOCKS;
+                    MARKS = window.RichTextTypes.MARKS;
+                } else if (typeof contentfulRichTextTypes !== 'undefined') {
+                    BLOCKS = contentfulRichTextTypes.BLOCKS;
+                    MARKS = contentfulRichTextTypes.MARKS;
+                } else {
+                    // Fallback BLOCKS and MARKS definitions
+                    BLOCKS = {
+                        PARAGRAPH: 'paragraph',
+                        HEADING_1: 'heading-1',
+                        HEADING_2: 'heading-2',
+                        HEADING_3: 'heading-3',
+                        HEADING_4: 'heading-4',
+                        HEADING_5: 'heading-5',
+                        HEADING_6: 'heading-6',
+                        UL_LIST: 'unordered-list',
+                        OL_LIST: 'ordered-list',
+                        LIST_ITEM: 'list-item',
+                        QUOTE: 'blockquote',
+                        HR: 'hr'
+                    };
+                    MARKS = {
+                        BOLD: 'bold',
+                        ITALIC: 'italic',
+                        UNDERLINE: 'underline',
+                        CODE: 'code'
+                    };
+                }
+
+                if (typeof window.RichTextHtmlRenderer !== 'undefined') {
+                    documentToHtmlString = window.RichTextHtmlRenderer.documentToHtmlString;
+                } else if (typeof contentfulRichTextHtmlRenderer !== 'undefined') {
+                    documentToHtmlString = contentfulRichTextHtmlRenderer.documentToHtmlString;
+                } else {
+                    // Simple fallback renderer
+                    documentToHtmlString = function(richTextDocument) {
+                        if (!richTextDocument || !richTextDocument.content) return '';
+                        return renderRichText(richTextDocument.content);
+                    };
+                }
+            } catch (error) {
+                console.warn('Rich text renderer not available, using fallback:', error);
+                documentToHtmlString = function(richTextDocument) {
+                    if (!richTextDocument || !richTextDocument.content) return '';
+                    return renderRichText(richTextDocument.content);
+                };
+            }
+
+            return { BLOCKS, MARKS, documentToHtmlString };
+        }
+
+        // Fallback rich text renderer
+        function renderRichText(content) {
+            if (!Array.isArray(content)) return '';
+            
+            return content.map(node => {
+                if (!node.nodeType) return '';
+                
+                switch (node.nodeType) {
+                    case 'paragraph':
+                        const text = node.content ? node.content.map(textNode => {
+                            if (textNode.nodeType === 'text') {
+                                let value = textNode.value || '';
+                                if (textNode.marks) {
+                                    textNode.marks.forEach(mark => {
+                                        switch (mark.type) {
+                                            case 'bold':
+                                                value = `<strong>${value}</strong>`;
+                                                break;
+                                            case 'italic':
+                                                value = `<em>${value}</em>`;
+                                                break;
+                                            case 'code':
+                                                value = `<code>${value}</code>`;
+                                                break;
+                                        }
+                                    });
+                                }
+                                return value;
+                            }
+                            return '';
+                        }).join('') : '';
+                        return `<p>${text}</p>`;
+                    
+                    case 'heading-1':
+                        return `<h1>${getTextContent(node)}</h1>`;
+                    case 'heading-2':
+                        return `<h2>${getTextContent(node)}</h2>`;
+                    case 'heading-3':
+                        return `<h3>${getTextContent(node)}</h3>`;
+                    case 'heading-4':
+                        return `<h4>${getTextContent(node)}</h4>`;
+                    case 'heading-5':
+                        return `<h5>${getTextContent(node)}</h5>`;
+                    case 'heading-6':
+                        return `<h6>${getTextContent(node)}</h6>`;
+                    
+                    case 'unordered-list':
+                        const ulItems = node.content ? node.content.map(item => 
+                            `<li>${renderRichText(item.content)}</li>`
+                        ).join('') : '';
+                        return `<ul>${ulItems}</ul>`;
+                    
+                    case 'ordered-list':
+                        const olItems = node.content ? node.content.map(item => 
+                            `<li>${renderRichText(item.content)}</li>`
+                        ).join('') : '';
+                        return `<ol>${olItems}</ol>`;
+                    
+                    case 'blockquote':
+                        return `<blockquote>${renderRichText(node.content)}</blockquote>`;
+                    
+                    case 'hr':
+                        return '<hr>';
+                    
+                    default:
+                        return node.content ? renderRichText(node.content) : '';
+                }
+            }).join('');
+        }
+
+        function getTextContent(node) {
+            if (!node.content) return '';
+            return node.content.map(textNode => textNode.value || '').join('');
+        }
+
+        // Initialize Contentful client
+        const client = contentful.createClient({
+            space: 'gzpxt46u6ehg',
+            accessToken: '1l5gpNgd7bplXFL5-KNqzkX2rH0ZzuswSfc5fEnXFyA',
+            host: 'preview.contentful.com'
+        });
+
+        // Utility Functions
+        function getRichTextString(richTextField) {
+            if (!richTextField || !richTextField.content) return '';
+            return richTextField.content
+                .map(item => item.content?.[0]?.value || '')
+                .join(' ')
+                .trim();
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function calculateReadingTime(text) {
+            const wordsPerMinute = 200;
+            const words = text.trim().split(/\s+/).length;
+            const minutes = Math.ceil(words / wordsPerMinute);
+            return `${minutes} min read`;
+        }
+
+        function validatePostId(id) {
+            if (!id || typeof id !== 'string') return false;
+            // Basic validation for Contentful entry IDs
+            return /^[a-zA-Z0-9]{16,}$/.test(id);
+        }
+
+        function createGoogleMapsLink(location) {
+            if (!location) return '';
+            // If it's coordinates (lat,lng)
+            if (location.includes(',')) {
+                return `https://www.google.com/maps?q=${encodeURIComponent(location)}`;
+            }
+            // If it's a place name
+            return `https://www.google.com/maps/search/${encodeURIComponent(location)}`;
+        }
+
+        function updateShareButtons(title, url) {
+            const encodedTitle = encodeURIComponent(title);
+            const encodedUrl = encodeURIComponent(url);
+            
+            document.getElementById('shareTwitter').href = 
+                `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`;
+            document.getElementById('shareLinkedin').href = 
+                `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+            document.getElementById('shareFacebook').href = 
+                `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+        }
+
+        function setupImageModal() {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const closeBtn = document.querySelector('.close-modal');
+
+            // Close modal when clicking the X
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            // Close modal when clicking outside the image
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.style.display === 'block') {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        function openImageModal(src, alt) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = 'block';
+            modalImg.src = src;
+            modalImg.alt = alt;
+        }
+
+        function renderImageGallery(images) {
+            if (!images || images.length === 0) return;
+
+            const galleryContainer = document.getElementById('imageGallery');
+            const galleryGrid = document.getElementById('galleryGrid');
+            
+            galleryGrid.innerHTML = images.map((image, index) => {
+                const imageUrl = image.fields?.file?.url;
+                const imageTitle = image.fields?.title || `Gallery Image ${index + 1}`;
+                
+                if (!imageUrl) return '';
+                
+                return `
+                    <img 
+                        src="https:${imageUrl}" 
+                        alt="${imageTitle}"
+                        class="gallery-image"
+                        onclick="openImageModal('https:${imageUrl}', '${imageTitle}')"
+                        loading="lazy"
+                    >
+                `;
+            }).join('');
+            
+            galleryContainer.style.display = 'block';
+        }
+
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('postContent').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+            
+            if (message) {
+                document.querySelector('#errorState p').textContent = message;
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loadingState').style.display = 'flex';
+            document.getElementById('postContent').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+        }
+
+        function showContent() {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+            document.getElementById('postContent').style.display = 'block';
+        }
+
+        async function loadPost() {
+            // Initialize Contentful libraries
+            const richTextRenderer = initializeContentful();
+            if (!richTextRenderer) return;
+
+            const { BLOCKS, MARKS, documentToHtmlString } = richTextRenderer;
+
+            // Get post ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const postId = urlParams.get('id');
+
+            // Validate post ID
+            if (!validatePostId(postId)) {
+                showError('Invalid post ID provided.');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                // Fetch the post from Contentful
+                const entry = await client.getEntry(postId, {
+                    include: 2 // Include referenced assets
+                });
+
+                const post = entry.fields;
+
+                // Extract field data with fallbacks
+                const title = getRichTextString(post.title) || post.title || 'Untitled Post';
+                const description = getRichTextString(post.description) || post.description || '';
+                
+                // Handle content rendering
+                let content = '';
+                if (post.content) {
+                    try {
+                        content = documentToHtmlString(post.content);
+                    } catch (error) {
+                        console.warn('Rich text rendering failed, using fallback:', error);
+                        content = getRichTextString(post.content) || 'Content could not be rendered.';
+                    }
+                }
+                
+                const category = post.category || 'Uncategorized';
+                const location = post.location || '';
+                const reference = post.reference || '';
+                const date = post.date || entry.sys.createdAt;
+
+                // Update document metadata
+                document.title = `${title} - Dean Hauser's Blog`;
+                document.querySelector('meta[name="description"]').content = description || title;
+
+                // Create schema markup
+                const schemaData = {
+                    "@context": "http://schema.org",
+                    "@type": "BlogPosting",
+                    "headline": title,
+                    "description": description,
+                    "datePublished": date,
+                    "dateModified": entry.sys.updatedAt,
+                    "author": {
+                        "@type": "Person",
+                        "name": "Dean Hauser"
+                    },
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": "Dean Hauser's Blog"
+                    }
+                };
+
+                // Add schema to head
+                const script = document.createElement('script');
+                script.type = 'application/ld+json';
+                script.text = JSON.stringify(schemaData);
+                document.head.appendChild(script);
+
+                // Populate the page content
+                document.getElementById('postTitle').textContent = title;
+                document.getElementById('postDate').textContent = formatDate(date);
+                
+                if (description) {
+                    document.getElementById('postDescription').textContent = description;
+                } else {
+                    document.getElementById('postDescription').style.display = 'none';
+                }
+
+                // Category
+                if (category && category !== 'Uncategorized') {
+                    document.getElementById('postCategory').innerHTML = `
+                        <div class="post-category">
+                            <i class="fas fa-tag"></i>
+                            ${category}
+                        </div>
+                    `;
+                }
+
+                // Location
+                if (location) {
+                    const locationContainer = document.getElementById('postLocation');
+                    const locationLink = document.getElementById('locationLink');
+                    locationLink.textContent = location;
+                    locationLink.href = createGoogleMapsLink(location);
+                    locationContainer.style.display = 'flex';
+                }
+
+                // Reading time
+                if (content) {
+                    document.getElementById('readingTime').textContent = calculateReadingTime(content);
+                } else {
+                    document.getElementById('readingTimeContainer').style.display = 'none';
+                }
+
+                // Handle images
+                if (post.image) {
+                    if (Array.isArray(post.image)) {
+                        // Multiple images - show as gallery
+                        if (post.image.length > 1) {
+                            renderImageGallery(post.image);
+                        } else if (post.image.length === 1) {
+                            // Single image as featured
+                            const imageUrl = post.image[0].fields?.file?.url;
+                            const imageTitle = post.image[0].fields?.title || title;
+                            if (imageUrl) {
+                                document.getElementById('featuredImageContainer').innerHTML = `
+                                    <img 
+                                        src="https:${imageUrl}" 
+                                        alt="${imageTitle}"
+                                        class="post-featured-image"
+                                        itemprop="image"
+                                    >
+                                `;
+                            }
+                        }
+                    } else {
+                        // Single image object
+                        const imageUrl = post.image.fields?.file?.url;
+                        const imageTitle = post.image.fields?.title || title;
+                        if (imageUrl) {
+                            document.getElementById('featuredImageContainer').innerHTML = `
+                                <img 
+                                    src="https:${imageUrl}" 
+                                    alt="${imageTitle}"
+                                    class="post-featured-image"
+                                    itemprop="image"
+                                >
+                            `;
+                        }
+                    }
+                }
+
+                // Content
+                if (content) {
+                    document.getElementById('postBodyContent').innerHTML = `
+                        <div itemprop="articleBody">
+                            ${content}
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('postBodyContent').innerHTML = `
+                        <p>No content available for this post.</p>
+                    `;
+                }
+
+                // Reference
+                if (reference) {
+                    document.getElementById('referenceContent').textContent = reference;
+                    document.getElementById('referenceSection').style.display = 'block';
+                }
+
+                // Tags (if available in your content model)
+                if (post.tags && Array.isArray(post.tags)) {
+                    const tagsHtml = post.tags.map(tag => 
+                        `<a href="blog.html?tag=${encodeURIComponent(tag)}" class="tag">${tag}</a>`
+                    ).join('');
+                    document.getElementById('postTags').innerHTML = tagsHtml;
+                }
+
+                // Update share buttons
+                updateShareButtons(title, window.location.href);
+
+                // Show the content
+                showContent();
+
+                // Initialize syntax highlighting
+                if (typeof Prism !== 'undefined') {
+                    Prism.highlightAll();
+                }
+
+            } catch (error) {
+                console.error('Error loading post:', error);
+                
+                // Handle specific error types
+                if (error.message && error.message.includes('404')) {
+                    showError('Blog post not found. It may have been moved or deleted.');
+                } else if (error.message && error.message.includes('network')) {
+                    showError('Network error. Please check your connection and try again.');
+                } else {
+                    showError('Failed to load blog post. Please try again later.');
+                }
+            }
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Setup image modal functionality
+            setupImageModal();
+            
+            // Add a small delay to ensure all scripts are loaded
+            setTimeout(() => {
+                loadPost();
+            }, 100);
+        });
+
+        // Handle browser back/forward navigation
+        window.addEventListener('popstate', function(event) {
+            loadPost();
+        });
+
+        // Smooth scrolling for anchor links
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('a[href^="#"]')) {
+                e.preventDefault();
+                const id = e.target.getAttribute('href').slice(1);
+                const element = document.getElementById(id);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+
+        // Copy link functionality (optional enhancement)
+        function copyPostLink() {
+            navigator.clipboard.writeText(window.location.href).then(function() {
+                // You could show a toast notification here
+                console.log('Link copied to clipboard');
+            }).catch(function(err) {
+                console.error('Could not copy link: ', err);
+            });
+        }
+
+        // Add keyboard navigation for gallery
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('imageModal');
+            if (modal.style.display === 'block') {
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                    // You could implement next/previous image navigation here
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // Progressive image loading for better performance
+        function setupLazyLoading() {
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                });
+
+                document.querySelectorAll('img[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+        }
+
+        // Error boundary for graceful degradation
+        window.addEventListener('error', function(e) {
+            console.error('JavaScript error:', e.error);
+            // You could implement error reporting here
+        });
+
+        // Performance monitoring (optional)
+        window.addEventListener('load', function() {
+            // Log page load time for performance monitoring
+            if (performance && performance.timing) {
+                const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+                console.log('Page load time:', loadTime + 'ms');
+            }
+        });
+    </script>
+</body>
+</html>
